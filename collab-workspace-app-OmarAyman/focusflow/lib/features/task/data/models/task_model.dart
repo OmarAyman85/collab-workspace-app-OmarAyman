@@ -70,6 +70,7 @@ class TaskModel extends TaskEntity {
 
   TaskEntity toEntity() => this;
 
+  @override
   TaskModel copyWith({
     String? id,
     String? title,

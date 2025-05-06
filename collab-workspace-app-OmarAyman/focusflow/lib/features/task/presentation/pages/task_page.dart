@@ -45,7 +45,6 @@ class _TaskPageState extends State<TaskPage> {
   ) {
     final updatedTask = task.copyWith(status: newStatus);
 
-    // Update task and then reload tasks
     context.read<TaskCubit>().updateTask(
       workspaceId: widget.workspaceId,
       boardId: widget.boardId,
@@ -65,8 +64,8 @@ class _TaskPageState extends State<TaskPage> {
   ) {
     return Expanded(
       child: DragTarget<TaskEntity>(
-        onWillAccept: (_) => true,
-        onAccept: (task) => _onTaskDropped(task, status, userMap),
+        onWillAcceptWithDetails: (_) => true,
+        onAcceptWithDetails: (task) => _onTaskDropped(task as TaskEntity, status, userMap),
         builder: (context, candidateData, rejectedData) {
           return Container(
             margin: const EdgeInsets.all(8),
