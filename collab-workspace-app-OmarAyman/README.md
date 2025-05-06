@@ -235,7 +235,8 @@ users (collection)
     ├── uid
     ├── name
     ├── email
-    └── password
+    ├── password
+    └── photoUrl
 
 workspaces (collection)
 └── {workspaceId}
@@ -295,6 +296,8 @@ Stores information about each registered user.
 | `name`     | String | Full name of the user                             |
 | `email`    | String | Unique email address                              |
 | `password` | String | Hashed password (optional if using Firebase Auth) |
+| `photoUrl` | String | Profile picture Urls after impelemntation         |
+
 
 ---
 ## WORKSPACES :-
