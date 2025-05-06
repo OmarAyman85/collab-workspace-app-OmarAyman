@@ -9,7 +9,6 @@ class TaskEntity {
   final String priority;
   final DateTime? dueDate;
   final DateTime createdAt;
-  // final String createdBy;
   final String createdById;
   final String createdByName;
   final List<AttachmentEntity> attachments;
@@ -23,7 +22,6 @@ class TaskEntity {
     required this.priority,
     this.dueDate,
     required this.createdAt,
-    // required this.createdBy,
     required this.createdById,
     required this.createdByName,
     required this.attachments,
@@ -38,7 +36,6 @@ class TaskEntity {
     String? priority,
     DateTime? dueDate,
     DateTime? createdAt,
-    // String? createdBy,
     String? createdById,
     String? createdByName,
     List<AttachmentEntity>? attachments,
@@ -52,7 +49,6 @@ class TaskEntity {
       priority: priority ?? this.priority,
       dueDate: dueDate ?? this.dueDate,
       createdAt: createdAt ?? this.createdAt,
-      // createdBy: createdBy ?? this.createdBy,
       createdById: createdById ?? this.createdById,
       createdByName: createdByName ?? this.createdByName,
       attachments: attachments ?? this.attachments,

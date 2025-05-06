@@ -35,14 +35,6 @@ class _TaskFormState extends State<TaskForm> {
 
   Future<void> _submitForm(String userId, String userName) async {
     if (!_formKey.currentState!.validate()) return;
-    // if (_assignedTo.isEmpty || _dueDate == null) {
-    //   final msg =
-    //       _assignedTo.isEmpty
-    //           ? 'Please assign at least one member'
-    //           : 'Please select a due date';
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
-    //   return;
-    // }
 
     _formKey.currentState!.save();
 
