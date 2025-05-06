@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:focusflow/core/entities/member.dart';
 import '../../domain/entities/task_entity.dart';
 import '../../domain/entities/attachment_entity.dart';
 import 'attachment_model.dart';
@@ -23,7 +24,9 @@ class TaskModel extends TaskEntity {
       id: taskId,
       title: map['title'] ?? '',
       description: map['description'] ?? '',
-      assignedTo: List<String>.from(map['assignedTo'] ?? []),
+      assignedTo: List<Member>.from(
+        (map['assignedTo'] ?? []).map((m) => Member.fromMap(m)),
+      ),
       status: map['status'] ?? 'todo',
       priority: map['priority'] ?? 'medium',
       dueDate:
@@ -44,7 +47,8 @@ class TaskModel extends TaskEntity {
     return {
       'title': title,
       'description': description,
-      'assignedTo': assignedTo,
+      'assignedTo': assignedTo.map((m) => m.toMap()).toList(),
+      'assignedToIds': assignedTo.map((m) => m.id).toList(),
       'status': status,
       'priority': priority,
       'dueDate': dueDate != null ? Timestamp.fromDate(dueDate!) : null,
@@ -78,7 +82,7 @@ class TaskModel extends TaskEntity {
     String? id,
     String? title,
     String? description,
-    List<String>? assignedTo,
+    List<Member>? assignedTo,
     String? status,
     String? priority,
     DateTime? dueDate,

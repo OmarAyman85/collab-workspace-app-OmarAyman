@@ -1,10 +1,12 @@
+import 'package:focusflow/core/entities/member.dart';
+
 import 'attachment_entity.dart';
 
 class TaskEntity {
   final String id;
   final String title;
   final String description;
-  final List<String> assignedTo;
+  final List<Member> assignedTo;
   final String status;
   final String priority;
   final DateTime? dueDate;
@@ -31,7 +33,7 @@ class TaskEntity {
     String? id,
     String? title,
     String? description,
-    List<String>? assignedTo,
+    List<Member>? assignedTo,
     String? status,
     String? priority,
     DateTime? dueDate,

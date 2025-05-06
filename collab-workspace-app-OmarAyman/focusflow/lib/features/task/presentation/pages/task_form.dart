@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:focusflow/core/entities/member.dart';
 import 'package:focusflow/core/widgets/main_app_bar_widget.dart';
 import 'package:focusflow/core/widgets/text_form_field_widget.dart';
 import 'package:focusflow/core/theme/app_pallete.dart';
@@ -25,7 +26,7 @@ class TaskForm extends StatefulWidget {
 
 class _TaskFormState extends State<TaskForm> {
   final _formKey = GlobalKey<FormState>();
-  final List<String> _assignedTo = [];
+  List<Member> _assignedTo = [];
 
   String _taskTitle = '';
   String _taskDescription = '';
@@ -102,14 +103,16 @@ class _TaskFormState extends State<TaskForm> {
                   ),
                   const SizedBox(height: 20),
                   AssignedMembersWidget(
-                    assignedTo: _assignedTo,
-                    onMemberAdded:
-                        (name) => setState(() => _assignedTo.add(name)),
-                    onMemberRemoved:
-                        (name) => setState(() => _assignedTo.remove(name)),
                     boardId: widget.boardId,
                     workspaceId: widget.workspaceId,
+                    initialAssignedTo: _assignedTo,
+                    onChanged: (updatedList) {
+                      setState(() {
+                        _assignedTo = updatedList;
+                      });
+                    },
                   ),
+
                   const SizedBox(height: 20),
                   PriorityDropdown(
                     currentPriority: _priority,
