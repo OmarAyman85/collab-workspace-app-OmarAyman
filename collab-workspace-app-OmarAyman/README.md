@@ -105,11 +105,6 @@ Firebase Functions was selected as the backend solution as it powers serverless 
 | Supabase Edge        | Good Postgres integration, but limited compared to Firebase's serverless maturity and real-time database support. |
 | Python Flask/FastAPI | Great flexibility, but requires full backend infrastructure, monitoring, and manual auth integration. |
 
-## Comparison:
-    • Laravel API: Requires backend hosting and scaling setup; better for traditional web apps but slower to integrate with Firebase-native tools.
-    • Supabase Edge Functions: Good Postgres integration, but limited compared to Firebase's serverless maturity and real-time database support.
-    • Python Flask/FastAPI: Great flexibility, but requires full backend infrastructure, monitoring, and manual auth integration.
-
 ---
 
 ## 🚀 Getting Started
@@ -263,15 +258,18 @@ This document outlines the enhanced Firestore schema used for a collaborative wo
 ---
 
 ## Firestore (Firebase) benefits:
-    • Real-time updates (ideal for chat, task collaboration).
-    • Native Flutter SDK support.
-    • Seamless Firebase Authentication integration.
+
+- • Real-time updates (ideal for chat, task collaboration).
+- • Native Flutter SDK support.
+- • Seamless Firebase Authentication integration.
 
 ---
 
-## Advantages Over Alternatives:
-    • Supabase (PostgreSQL): Structured and powerful for relational queries but adds complexity for highly dynamic, nested data like members, task assignments and task attachments.
-    • MySQL: Robust for strict schemas but lacks real-time capabilities and needs manual sync logic for Flutter.
+### 🔁 Compared To:
+| Alternative                | Firesotre Edge |
+|----------------------------|----------------|
+| Supabase (PostgreSQL)      | Structured and powerful for relational queries but adds complexity for highly dynamic, nested data like members, task assignments and task attachments |
+| MySQL                      | Robust for strict schemas but lacks real-time capabilities and needs manual sync logic for Flutter |
 
 ---
 
