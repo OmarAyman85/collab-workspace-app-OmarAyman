@@ -230,7 +230,7 @@ workspaces/{workspaceId}/boards/{boardId}/tasks/{taskId}
 ---
 
 ```plaintext
-users (collection)
+users (collection) @ users/{userId}
 └── {userId}
     ├── uid
     ├── name
@@ -238,7 +238,7 @@ users (collection)
     ├── password
     └── photoUrl
 
-workspaces (collection)
+workspaces (collection) @ workspaces/{workspaceId}
 └── {workspaceId}
     ├── name
     ├── description
@@ -250,7 +250,7 @@ workspaces (collection)
             {userId2, UserName2}
                   ]
 
-boards (sub-collection)
+boards (sub-collection) @ workspaces/{workspaceId}/boards/{boardId}
 └── {boardId}
     ├── workspaceId
     ├── name
@@ -263,16 +263,19 @@ boards (sub-collection)
             {userId2, UserName2}
                   ]
 
-tasks (sub-collection)
+tasks (sub-collection) @ workspaces/{workspaceId}/boards/{boardId}/tasks/{taskId}
 └── {taskId}
     ├── title
     ├── description
     ├── status: "To Do" | "In Progress" | "Done"
     ├── priority: "Low" | "Medium" | "High"
-    ├── assignedTo: [userId1, userId2, ...]
-    ├── createdBy
-    ├── createdAt
     ├── dueDate
+    ├── createdAt
+    ├── createdBy: {userId, UserName}
+    ├── assignedTo:  [
+            {userId1, UserName1},
+            {userId2, UserName2}
+                  ]
     └── attachments: [{
             name
             url
@@ -340,13 +343,13 @@ Represents a task assigned to one or more users within a board.
 | ------------- | --------- | --------------------------------------------------------- |
 | `title`       | String    | Title of the task                                         |
 | `description` | String    | Detailed description                                      |
-| `attachments` | Array     | List of attachment object                                 |
-| `assignedTo`  | Array     | List of user names assigned to this task                  |
 | `status`      | String    | Workflow status: `"To Do"` \| `"In Progress"` \| `"Done"` |
 | `priority`    | String    | Task urgency: `"Low"` \| `"Medium"` \| `"High"`           |
-| `createdAt`   | Timestamp | Task creation time                                        |
-| `createdBy`   | String    | ID of the user who created the task                       |
 | `dueDate`     | Timestamp | Optional deadline                                         |
+| `createdAt`   | Timestamp | Task creation time                                        |
+| `createdBy`   | String    | ID and name of the user who created the task              |
+| `assignedTo`  | Array     | List of users assigned to this task                       |
+| `attachments` | Array     | List of attachment object                                 |
 
 ---
 
