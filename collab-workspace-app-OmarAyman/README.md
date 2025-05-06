@@ -255,7 +255,6 @@ boards (sub-collection)
     ├── workspaceId
     ├── name
     ├── description
-    ├── createdAt
     ├── createdBy: {userId, UserName}
     ├── numberOfMembers
     ├── numberOfTasks
