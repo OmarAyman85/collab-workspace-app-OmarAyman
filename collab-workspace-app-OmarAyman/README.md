@@ -326,8 +326,8 @@ Represents a board within a workspace. Boards contain tasks and define specific 
 | `numberOfMembers` | Number    | Total number of members                      |
 | `numberOfTasks`   | Number    | Total number of boards within the workspace  |
 | `createdBy`       | Object    | Creator info `{ userId, userName }`          |
-| `createdAt`       | Timestamp | Date and time of board creation              |
 | `workspaceId`     | String    | ID of the workspace covering the board       |
+| `members`         | Array  | List of members: `[ { userId, userName } ]`     |
 
 ---
 
