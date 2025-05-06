@@ -33,16 +33,16 @@ class _TaskFormState extends State<TaskForm> {
   final String _status = 'todo';
   DateTime? _dueDate;
 
-  Future<void> _submitForm(String userId) async {
+  Future<void> _submitForm(String userId, String userName) async {
     if (!_formKey.currentState!.validate()) return;
-    if (_assignedTo.isEmpty || _dueDate == null) {
-      final msg =
-          _assignedTo.isEmpty
-              ? 'Please assign at least one member'
-              : 'Please select a due date';
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
-      return;
-    }
+    // if (_assignedTo.isEmpty || _dueDate == null) {
+    //   final msg =
+    //       _assignedTo.isEmpty
+    //           ? 'Please assign at least one member'
+    //           : 'Please select a due date';
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+    //   return;
+    // }
 
     _formKey.currentState!.save();
 
@@ -55,7 +55,8 @@ class _TaskFormState extends State<TaskForm> {
       priority: _priority,
       dueDate: _dueDate,
       createdAt: DateTime.now(),
-      createdBy: userId,
+      createdById: userId,
+      createdByName: userName,
       attachments: [],
     );
 
@@ -75,6 +76,7 @@ class _TaskFormState extends State<TaskForm> {
         if (state is! AuthAuthenticated) return const SizedBox();
 
         final userId = state.user.uid;
+        final userName = state.user.name;
 
         return Scaffold(
           appBar: const MainAppBar(title: 'Create Task'),
@@ -114,7 +116,7 @@ class _TaskFormState extends State<TaskForm> {
                     onMemberRemoved:
                         (name) => setState(() => _assignedTo.remove(name)),
                     boardId: widget.boardId,
-                    workspaceId: widget.workspaceId
+                    workspaceId: widget.workspaceId,
                   ),
                   const SizedBox(height: 20),
                   PriorityDropdown(
@@ -142,7 +144,7 @@ class _TaskFormState extends State<TaskForm> {
                   const SizedBox(height: 30),
                   Center(
                     child: ElevatedButton(
-                      onPressed: () => _submitForm(userId),
+                      onPressed: () => _submitForm(userId, userName),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppPallete.backgroundColor,
                         foregroundColor: AppPallete.gradient1,
