@@ -7,31 +7,39 @@
 ## 📌 Features
 
 ### 🔐 1. User Authentication
+
 - Sign up, log in, and log out using Firebase Authentication.
 - Basic user profile Page.
 
 ### 🧩 2. Workspace Dashboard
+
 - View all workspaces the user is part of.
 - Each workspace displays a short description, member count and Task boards count.
 
 ### 🗂️ 3. Workspace Details Page
+
 - View list of boards inside the selected workspace.
 - Create new boards.
 
 ### 📋 4. Board Details Page
+
 - Each board includes a Kanban layout with task cards.
 - Tasks have a title, description, status (To-Do, In Progress, Done), and optional due date.
 
 ### 👥 5. Task Assignment
+
 - Assign tasks to specific users within each board in each workspace.
 
 ### 📆 6. Gantt Chart
+
 - Visual representation of tasks and their timelines across the board.
-  
+
 ### 🔔 7. Notifications
+
 - Notify users via email --simulated via console logs-- when assigned to tasks.
 
 ### 🧱 8. Custom Drag-and-Drop Kanban Board
+
 - Drag tasks between columns to update their status interactively.
 
 ---
@@ -39,14 +47,17 @@
 ## 🧭 App Workflow Overview
 
 ### 1. **Authentication**
+
 - Users sign up/log in using Firebase Auth.
 - User details stored in Firestore under `/users`.
 
 ### 2. **Workspace Flow**
+
 - Post-authentication, users see their workspaces.
 - Users can create a workspace or join existing ones.
 
 ### 3. **Board & Task Management**
+
 - Inside each workspace, users manage boards.
 - Each board contains tasks which can be assigned and tracked using drag-and-drop and Gantt views.
 
@@ -73,7 +84,6 @@
 
 ---
 
-
 ## 🚀 Getting Started
 
 This project serves as a clean starting point for building production-grade Flutter applications using Firebase and Clean Architecture.
@@ -88,6 +98,7 @@ This project serves as a clean starting point for building production-grade Flut
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/OmarAyman85/collab-workspace-app-OmarAyman.git
    cd collab-workspace-app-OmarAyman
@@ -95,6 +106,7 @@ This project serves as a clean starting point for building production-grade Flut
    ```
 
 2. Install dependencies:
+
    ```bash
    flutter pub get
    ```
@@ -117,10 +129,12 @@ This project serves as a clean starting point for building production-grade Flut
 FocusFlow follows a **feature-first Clean Architecture** approach, ensuring scalability, testability, and separation of concerns. The app is structured into three well-defined layers:
 
 1. **Presentation Layer**
+
    - Contains UI widgets, pages, and Cubit-based state management.
    - Handles user interactions and reflects state changes.
 
 2. **Domain Layer**
+
    - Encapsulates core business logic through **use cases**.
    - Defines abstract **repositories** and **entities**, independent of external dependencies.
 
@@ -133,7 +147,6 @@ FocusFlow follows a **feature-first Clean Architecture** approach, ensuring scal
 Each major feature is self-contained under the `features/` directory in its own folder (`features/auth`, `features/workspace`, `features/board`, `features/task`), and follows the same internal structure.
 
 ---
-
 
 ## 🗂️ Project Structure
 
@@ -210,6 +223,7 @@ Each major feature is self-contained under the `features/` directory in its own 
 └── main.dart                   # App entry point
 
 ```
+
 ---
 
 ## 🔥 Firebase Database Schema
@@ -232,51 +246,51 @@ workspaces/{workspaceId}/boards/{boardId}/tasks/{taskId}
 ```plaintext
 users (collection) @ users/{userId}
 └── {userId}
-    ├── uid
-    ├── name
-    ├── email
-    ├── password
-    └── photoUrl
+      ├── uid
+      ├── name
+      ├── email
+      ├── password
+      └── photoUrl
 
 workspaces (collection) @ workspaces/{workspaceId}
 └── {workspaceId}
-    ├── name
-    ├── description
-    ├── numberOfBoards
-    ├── numberOfMembers
-    ├── createdBy: {userId, UserName}
-    └── members: [
-            {userId1, UserName1},
-            {userId2, UserName2}
-                  ]
+      ├── name
+      ├── description
+      ├── numberOfBoards
+      ├── numberOfMembers
+      ├── createdBy: {userId, UserName}
+      └── members: [
+               {userId1, UserName1},
+               {userId2, UserName2}
+                     ]
 
 boards (sub-collection) @ workspaces/{workspaceId}/boards/{boardId}
 └── {boardId}
-    ├── workspaceId
-    ├── name
-    ├── description
-    ├── createdBy: {userId, UserName}
-    ├── numberOfMembers
-    ├── numberOfTasks
-    └── members: [
-            {userId1, UserName1},
-            {userId2, UserName2}
-                  ]
+      ├── workspaceId
+      ├── name
+      ├── description
+      ├── createdBy: {userId, UserName}
+      ├── numberOfMembers
+      ├── numberOfTasks
+      └── members: [
+              {userId1, UserName1},
+               {userId2, UserName2}
+                     ]
 
 tasks (sub-collection) @ workspaces/{workspaceId}/boards/{boardId}/tasks/{taskId}
 └── {taskId}
-    ├── title
-    ├── description
-    ├── status: "To Do" | "In Progress" | "Done"
-    ├── priority: "Low" | "Medium" | "High"
-    ├── dueDate
-    ├── createdAt
-    ├── createdBy: {userId, UserName}
-    ├── assignedTo:  [
+      ├── title
+      ├── description
+      ├── status: "To Do" | "In Progress" | "Done"
+      ├── priority: "Low" | "Medium" | "High"
+      ├── dueDate
+      ├── createdAt
+      ├── createdBy: {userId, UserName}
+      ├── assignedTo: [
             {userId1, UserName1},
             {userId2, UserName2}
-                  ]
-    └── attachments: [{
+                     ]
+      └── attachments: [{
             name
             url
             type
@@ -284,9 +298,11 @@ tasks (sub-collection) @ workspaces/{workspaceId}/boards/{boardId}/tasks/{taskId
             uploadAt
                       }]
 ```
+
 ---
 
 ## 👤 USERS :-
+
 ## users/{userId}
 
 Stores information about each registered user.
@@ -299,9 +315,10 @@ Stores information about each registered user.
 | `password` | String | Hashed password (optional if using Firebase Auth) |
 | `photoUrl` | String | Profile picture Urls after impelemntation         |
 
-
 ---
+
 ## WORKSPACES :-
+
 ## 🏢 workspaces/{workspaceId}
 
 Represents a collaborative workspace that can contain multiple boards.
@@ -318,23 +335,25 @@ Represents a collaborative workspace that can contain multiple boards.
 ---
 
 ## 📁 BOARDS :-
+
 ## workspaces/{workspaceId}/boards/{boardId}
 
 Represents a board within a workspace. Boards contain tasks and define specific categories.
 
-| Field             | Type      | Description                                  |
-| ----------------- | --------- | -------------------------------------------- |
-| `name`            | String    | Name of the board                            |
-| `description`     | String    | Optional board details                       |
-| `numberOfMembers` | Number    | Total number of members                      |
-| `numberOfTasks`   | Number    | Total number of boards within the workspace  |
-| `createdBy`       | Object    | Creator info `{ userId, userName }`          |
-| `workspaceId`     | String    | ID of the workspace covering the board       |
-| `members`         | Array  | List of members: `[ { userId, userName } ]`     |
+| Field             | Type   | Description                                 |
+| ----------------- | ------ | ------------------------------------------- |
+| `name`            | String | Name of the board                           |
+| `description`     | String | Optional board details                      |
+| `numberOfMembers` | Number | Total number of members                     |
+| `numberOfTasks`   | Number | Total number of boards within the workspace |
+| `createdBy`       | Object | Creator info `{ userId, userName }`         |
+| `workspaceId`     | String | ID of the workspace covering the board      |
+| `members`         | Array  | List of members: `[ { userId, userName } ]` |
 
 ---
 
 ## 📝 TASKS :-
+
 ## workspaces/{workspaceId}/boards/{boardId}/tasks/{taskId}
 
 Represents a task assigned to one or more users within a board.
@@ -353,13 +372,12 @@ Represents a task assigned to one or more users within a board.
 
 ---
 
-
 ## 🔗 Relationships Summary
 
-* **User → Workspace:** A user can be part of multiple workspaces (`members` array).
-* **Workspace → Board:** A workspace contains multiple boards in a subcollection.
-* **Board → Task:** A board contains multiple tasks in a subcollection.
-* **User → Task:** Tasks reference users via `assignedTo` fields.
+- **User → Workspace:** A user can be part of multiple workspaces (`members` array).
+- **Workspace → Board:** A workspace contains multiple boards in a subcollection.
+- **Board → Task:** A board contains multiple tasks in a subcollection.
+- **User → Task:** Tasks reference users via `assignedTo` fields.
 
 ---
 
