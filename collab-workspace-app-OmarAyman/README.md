@@ -63,6 +63,17 @@
 
 ---
 
+## 🚀 Future Improvements
+
+- Integrating Firebase Storage to handle file attachments and user profile pictures securely and efficiently
+- Implement Local Storage for offline access
+- Workspace and boards roles & permissions
+- Push notifications
+- Dark mode and UI theming
+- Real-time collaboration with WebSockets or Firebase listeners
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Frontend**: Flutter (iOS, Android, Web)
@@ -73,14 +84,20 @@
 
 ---
 
-## 🚀 Future Improvements
+## Firebase Functions
 
-- Integrating Firebase Storage to handle file attachments and user profile pictures securely and efficiently
-- Implement Local Storage for offline access
-- Workspace and boards roles & permissions
-- Push notifications
-- Dark mode and UI theming
-- Real-time collaboration with WebSockets or Firebase listeners
+Firebase Functions was selected as the backend solution due to its seamless integration with Firebase Authentication, Firestore, and Firebase Storage — making it ideal for a serverless architecture in a Flutter application.
+
+## Key Factors Influencing the Decision:
+    • Integration Speed: Firebase Functions tightly integrate with other Firebase services, significantly reducing setup time and boilerplate code.
+    • Cost Efficiency: Firebase offers a generous free tier, and costs scale based on usage, which is optimal for early-stage and growing apps.
+    • Auto Scaling: Functions automatically scale with demand, eliminating the need for manual server provisioning.
+    • Security & Maintenance: With managed infrastructure, there’s no need to manage servers, patches, or scaling logic manually.
+
+## Comparison:
+    • Laravel API: Requires backend hosting and scaling setup; better for traditional web apps but slower to integrate with Firebase-native tools.
+    • Supabase Edge Functions: Good Postgres integration, but limited compared to Firebase's serverless maturity and real-time database support.
+    • Python Flask/FastAPI: Great flexibility, but requires full backend infrastructure, monitoring, and manual auth integration.
 
 ---
 
@@ -228,9 +245,25 @@ Each major feature is self-contained under the `features/` directory in its own 
 
 ## 🔥 Firebase Database Schema
 
+Firestore offers real-time data synchronization, offline support, and a flexible, schema-less structure — making it a strong choice for collaborative and mobile-first applications.
+
 This document outlines the enhanced Firestore schema used for a collaborative workspace management application. The schema is structured to support scalable, real-time features such as task tracking, user collaboration, workspace management, and project organization.
 
 ---
+
+## Firestore (Firebase) benefits:
+    • Real-time updates (ideal for chat, task collaboration).
+    • Native Flutter SDK support.
+    • Seamless Firebase Authentication integration.
+
+---
+
+## Advantages Over Alternatives:
+    • Supabase (PostgreSQL): Structured and powerful for relational queries but adds complexity for highly dynamic, nested data like members, task assignments and task attachments.
+    • MySQL: Robust for strict schemas but lacks real-time capabilities and needs manual sync logic for Flutter.
+
+---
+
 
 ## 📌 Collections Overview
 
@@ -378,6 +411,20 @@ Represents a task assigned to one or more users within a board.
 - **Workspace → Board:** A workspace contains multiple boards in a subcollection.
 - **Board → Task:** A board contains multiple tasks in a subcollection.
 - **User → Task:** Tasks reference users via `assignedTo` fields.
+
+---
+## Firebase Storage
+
+Firebase Storage is optimized for file uploads directly from mobile clients with built-in authentication support, making it a natural fit for a Flutter + Firebase stack.
+
+## Firebase Storage Advantages:
+    • Strong security via Firebase rules.
+    • Direct file uploads from client-side.
+    • Simple download URL management.
+
+## Comparison:
+    • Amazon S3: More configurable and scalable for enterprise-scale apps, but requires additional effort to integrate with Firebase Auth and manage access rules.
+    • Supabase Storage: Good for PostgreSQL integration but lacks the maturity and tooling Firebase offers for mobile-first development.
 
 ---
 
