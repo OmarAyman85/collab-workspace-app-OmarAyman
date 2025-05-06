@@ -24,7 +24,7 @@
 ### 📋 4. Board Details Page
 
 - Each board includes a Kanban layout with task cards.
-- Tasks have a title, description, status (To-Do, In Progress, Done), and optional due date.
+- Tasks have a title, description, status (To-Do, In Progress, Done), priority (Low, Medium, High) and optional due date.
 
 ### 👥 5. Task Assignment
 
@@ -32,15 +32,15 @@
 
 ### 📆 6. Gantt Chart
 
-- Visual representation of tasks and their timelines across the board.
+- Visualize task durations and dependencies across the board.
 
 ### 🔔 7. Notifications
 
-- Notify users via email --simulated via console logs-- when assigned to tasks.
+- Simulated email notifications (via console logs) when tasks are assigned.
 
 ### 🧱 8. Custom Drag-and-Drop Kanban Board
 
-- Drag tasks between columns to update their status interactively.
+- Interactive task management using drag-and-drop between status columns.
 
 ---
 
@@ -48,29 +48,30 @@
 
 ### 1. **Authentication**
 
-- Users sign up/log in using Firebase Auth.
+- Users sign up or log in via Firebase Auth.
 - User details stored in Firestore under `/users`.
 
 ### 2. **Workspace Flow**
 
-- Post-authentication, users see their workspaces.
-- Users can create a workspace or join existing ones.
+- Users land on their workspace dashboard post-authentication.
+- Users can create new workspaces or join existing ones.
 
 ### 3. **Board & Task Management**
 
 - Inside each workspace, users manage boards.
-- Each board contains tasks which can be assigned and tracked using drag-and-drop and Gantt views.
+- Boards contain drag-and-drop task columns and Gantt chart timelines.
+- Tasks are assignable and editable with real-time sync.
 
 ---
 
 ## 🚀 Future Improvements
 
-- Integrating Firebase Storage to handle file attachments and user profile pictures securely and efficiently
-- Implement Local Storage for offline access
-- Workspace and boards roles & permissions
-- Push notifications
-- Dark mode and UI theming
-- Real-time collaboration with WebSockets or Firebase listeners
+- 🔐 Workspace roles and permission control (admin, member).
+- 🔗 Firebase Storage for file uploads (attachments, avatars, profile pictures, etc...).
+- 📶 Offline access via local storage caching.
+- 📱 Push notifications for mobile and web.
+- 🌓 UI theming: Dark mode support.
+- 🔁 Real-time sync with Firebase listeners or WebSockets.
 
 ---
 
@@ -84,15 +85,25 @@
 
 ---
 
-## Firebase Functions
+## ⚙️ Firebase Functions
 
-Firebase Functions was selected as the backend solution due to its seamless integration with Firebase Authentication, Firestore, and Firebase Storage — making it ideal for a serverless architecture in a Flutter application.
+Firebase Functions was selected as the backend solution as it powers serverless backend logic with secure and scalable automation. Perfect for task notifications, role assignments, and background jobs.
 
-## Key Factors Influencing the Decision:
-    • Integration Speed: Firebase Functions tightly integrate with other Firebase services, significantly reducing setup time and boilerplate code.
-    • Cost Efficiency: Firebase offers a generous free tier, and costs scale based on usage, which is optimal for early-stage and growing apps.
-    • Auto Scaling: Functions automatically scale with demand, eliminating the need for manual server provisioning.
-    • Security & Maintenance: With managed infrastructure, there’s no need to manage servers, patches, or scaling logic manually.
+
+### 🔍 Key Factors Influencing the Decision:
+
+- **Tight Integration**: Auth, Firestore, and Storage work seamlessly.
+- **Auto-scaling**: No need for manual server provisioning.
+- **Serverless**: Managed hosting with zero maintenance.
+- **Cost-effective**: Free tier ideal for early-stage teams.
+
+### 🔁 Compared To:
+
+| Alternative          | Firebase Edge |
+|----------------------|----------------|
+| Laravel + API        | Requires backend hosting and scaling setup; better for traditional web apps but slower to integrate with Firebase-native tools. |
+| Supabase Edge        | Good Postgres integration, but limited compared to Firebase's serverless maturity and real-time database support. |
+| Python Flask/FastAPI | Great flexibility, but requires full backend infrastructure, monitoring, and manual auth integration. |
 
 ## Comparison:
     • Laravel API: Requires backend hosting and scaling setup; better for traditional web apps but slower to integrate with Firebase-native tools.
