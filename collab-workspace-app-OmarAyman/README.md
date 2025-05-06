@@ -256,8 +256,7 @@ boards (sub-collection)
     ├── name
     ├── description
     ├── createdAt
-    ├── createdById
-    ├── createdByName
+    ├── createdBy: {userId, UserName}
     ├── numberOfMembers
     ├── numberOfTasks
     └── members: [
@@ -321,13 +320,15 @@ Represents a collaborative workspace that can contain multiple boards.
 
 Represents a board within a workspace. Boards contain tasks and define specific categories.
 
-| Field         | Type      | Description                                  |
-| ------------- | --------- | -------------------------------------------- |
-| `name`        | String    | Name of the board                            |
-| `description` | String    | Optional board details                       |
-| `createdBy`   | Object    | Creator info `{ userId, userName }`          |
-| `createdAt`   | Timestamp | Date and time of board creation              |
-| `projectId`   | String    | (Optional) Associated project ID if relevant |
+| Field             | Type      | Description                                  |
+| ----------------- | --------- | -------------------------------------------- |
+| `name`            | String    | Name of the board                            |
+| `description`     | String    | Optional board details                       |
+| `numberOfMembers` | Number    | Total number of members                      |
+| `numberOfTasks`   | Number    | Total number of boards within the workspace  |
+| `createdBy`       | Object    | Creator info `{ userId, userName }`          |
+| `createdAt`       | Timestamp | Date and time of board creation              |
+| `workspaceId`     | String    | ID of the workspace covering the board       |
 
 ---
 
