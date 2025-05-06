@@ -441,6 +441,26 @@ Firebase Storage is optimized for file uploads directly from mobile clients with
 
 ---
 
+## 🚀 Implementation Plan:
+
+- High-level overview of how database and storage are structured and connected to the app:
+  
+FocusFlow uses Firebase as the backend service to handle authentication, real-time data storage, and file management. The app is structured using a Clean Architecture approach, separating logic into Data, Domain, and Presentation layers.
+
+- **Authentication:** Firebase Authentication manages user sign-in/sign-up, and user data is stored in Cloud Firestore under the /users collection.
+  
+- **Firestore Database:** Structured into collections for users, workspaces, boards, and tasks. Each entity has its own subcollections and is linked via IDs for nested relationships (e.g., boards under a workspace, tasks under a board).
+  
+- **Firebase Storage:** Planned for future use to handle file uploads like attachments, avatars, and profile pictures.
+  
+- **Data Layer:** Implements repository interfaces using Firebase as the source of truth. It handles all reads/writes from Firestore and Storage.
+  
+- **Presentation Layer:** Uses Cubit (Bloc) for reactive state management. UI reacts to Firebase data changes via streams or real-time listeners.
+  
+This setup allows modular, scalable interaction between the app and Firebase services, ensuring seamless real-time collaboration and secure data handling.
+
+---
+
 ## 📃 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
