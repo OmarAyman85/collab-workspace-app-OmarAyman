@@ -259,9 +259,9 @@ This document outlines the enhanced Firestore schema used for a collaborative wo
 
 ## Firestore (Firebase) benefits:
 
-- • Real-time updates (ideal for chat, task collaboration).
-- • Native Flutter SDK support.
-- • Seamless Firebase Authentication integration.
+- Real-time updates (ideal for chat, task collaboration).
+- Native Flutter SDK support.
+- Seamless Firebase Authentication integration.
 
 ---
 
@@ -359,9 +359,9 @@ Stores information about each registered user.
 
 ---
 
-## WORKSPACES :-
+## 🏢 WORKSPACES :-
 
-## 🏢 workspaces/{workspaceId}
+## workspaces/{workspaceId}
 
 Represents a collaborative workspace that can contain multiple boards.
 
@@ -422,18 +422,22 @@ Represents a task assigned to one or more users within a board.
 - **User → Task:** Tasks reference users via `assignedTo` fields.
 
 ---
-## Firebase Storage
+### 🔥 Firebase Storage
 
 Firebase Storage is optimized for file uploads directly from mobile clients with built-in authentication support, making it a natural fit for a Flutter + Firebase stack.
 
 ## Firebase Storage Advantages:
-    • Strong security via Firebase rules.
-    • Direct file uploads from client-side.
-    • Simple download URL management.
 
-## Comparison:
-    • Amazon S3: More configurable and scalable for enterprise-scale apps, but requires additional effort to integrate with Firebase Auth and manage access rules.
-    • Supabase Storage: Good for PostgreSQL integration but lacks the maturity and tooling Firebase offers for mobile-first development.
+- Strong security via Firebase rules.
+- Direct file uploads from client-side.
+- Simple download URL management.
+
+### 🔁 Compared To:
+
+| Alternative          | Firebase Edge |
+|----------------------|----------------|
+| Amazon S3        | More configurable and scalable for enterprise-scale apps, but requires additional effort to integrate with Firebase Auth and manage access rules |
+| Supabase Storage        | Good for PostgreSQL integration but lacks the maturity and tooling Firebase offers for mobile-first development |
 
 ---
 
