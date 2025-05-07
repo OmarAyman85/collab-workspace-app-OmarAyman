@@ -526,7 +526,6 @@ Leverage an API Gateway (e.g., **AWS API Gateway**, **NGINX**) to:
 
 A robust authentication strategy is critical to ensuring secure access across mobile and web platforms. The implementation should combine industry standards with secure storage and proper token management. The following components form a comprehensive approach:
 
----
 
 ### 🔐 Authentication Protocols
 
@@ -538,7 +537,6 @@ Leverage modern authentication protocols such as:
 - **JWT (JSON Web Tokens)**  
   Used for stateless authentication and Role-Based Access Control (RBAC), where tokens encode user roles, permissions, and metadata.
 
----
 
 ### 🔑 Token Types and Secure Storage
 
@@ -560,7 +558,6 @@ Implement a dual-token system to balance usability and security:
   - Use **HttpOnly**, **Secure Cookies** to prevent XSS attacks  
   - Avoid using `localStorage` or `sessionStorage` for sensitive tokens
 
----
 
 ### 🔄 Token Expiration and Refresh Flows
 
@@ -583,9 +580,181 @@ Ensure a seamless user experience while maintaining security.
 This mechanism ensures continued secure access without frequent interruptions while guarding against unauthorized access through compromised tokens.
 
 ---
+## 3. Database Modeling: Structuring Users, Workspaces, Boards, and Tasks in Firestore
+
+When designing a scalable and maintainable data model in **Firestore**, it’s important to follow NoSQL principles like **data denormalization**, **subcollections**, and **document references**. Below is a schema tailored for collaboration-based applications such as task managers or project boards.
+
+
+### Core Entities and Their Attributes
+
+Each entity is represented as a Firestore document within a collection:
+
+* **Users**
+
+  ```
+  users/{userId} → {
+    name: string,
+    email: string,
+    photoUrl: string,
+    ...
+  }
+  ```
+
+* **Workspaces**
+
+  ```
+  workspaces/{workspaceId} → {
+    name: string,
+    createdBy: reference (users/{userId}),
+    createdAt: timestamp,
+    ...
+  }
+  ```
+
+* **Boards (within Workspaces)**
+
+  ```
+  workspaces/{workspaceId}/boards/{boardId} → {
+    name: string,
+    description: string,
+    createdAt: timestamp,
+    ...
+  }
+  ```
+
+* **Tasks (within Boards)**
+
+  ```
+  workspaces/{workspaceId}/boards/{boardId}/tasks/{taskId} → {
+    title: string,
+    description: string,
+    dueDate: timestamp,
+    assignedTo: array of references (users/{userId}),
+    createdAt: timestamp,
+    ...
+  }
+  ```
+
+
+### Modeling Relationships
+
+Although Firestore lacks support for native joins, relationships can still be represented through **document references** and **subcollections**.
+
+#### One-to-Many Relationships
+
+* **User → Workspaces (as owner)**
+  `workspaces/{workspaceId}` has a `createdBy` field referencing `users/{userId}`.
+
+* **Workspace → Boards**
+  Boards are modeled as a subcollection:
+  `workspaces/{workspaceId}/boards/{boardId}`
+
+* **Board → Tasks**
+  Tasks are stored in a nested subcollection:
+  `workspaces/{workspaceId}/boards/{boardId}/tasks/{taskId}`
+
+#### Many-to-Many Relationships
+
+* **Users ↔ Workspaces (as members)**
+  Store an array of user references or member objects in each workspace document under a `members` field.
+
+* **Tasks ↔ Users (as assignees)**
+  Use an array of user references in the `assignedTo` field within each task document.
+
+
+This data model ensures logical organization, high scalability, and efficient querying for collaborative applications in Firestore.
 
 ---
+## 4. State Management (Frontend)
 
+In Flutter development, choosing the right state management solution is critical for creating scalable, maintainable, and performant applications. Among the most widely adopted tools are **Provider**, **Riverpod**, and **BLoC (Business Logic Component)**. Each approach offers unique benefits and trade-offs, making it essential to evaluate them against the specific needs of the project. 
+
+For this application, **BLoC** was the most suitable choice due to its:
+
+- Robustness in managing complex state flows, such as transitions between Workspaces, Boards, and Tasks.
+- Strict separation of concerns, promoting a clear distinction between UI and business logic.
+- Testability, as business logic is encapsulated within blocs and can be independently tested.
+- Support for event-driven architecture, ideal for real-time updates and multi-user collaboration.
+
+
+### 📊 Comprehensive Comparison Table
+
+| Feature/Criteria       | Provider                                                    | Riverpod                                                                 | BLoC                                                                                 |
+|------------------------|-------------------------------------------------------------|--------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
+| **Boilerplate**        | Minimal setup; uses `ChangeNotifier` and `Consumer` widgets | Low boilerplate; relies on declarative providers                         | High; needs definition of events, states, blocs, and stream mapping                 |
+| **Architecture Fit**   | Loose structure; can grow messy in large apps               | Promotes clean separation and immutability                               | Strong architectural enforcement; aligns with Clean Architecture principles         |
+| **Scalability**        | Suitable for small to medium projects                       | Highly scalable; automatic disposal and modular provider hierarchy       | Excellent for enterprise-scale apps with well-defined business rules                |
+| **Reactivity Model**   | Basic; manual notification with `notifyListeners()`         | Fine-grained reactivity with built-in caching and auto-dispose           | Stream-based reactivity; handles complex async workflows elegantly                   |
+| **Performance**        | Good, but updates entire widget trees if not optimized      | Excellent; only rebuilds affected widgets                                | Good, but higher memory overhead due to stream usage                                 |
+| **Testing Support**    | Moderate; tightly coupled to UI in some cases               | Strong; logic remains separate from widgets                              | Excellent; logic and state are fully decoupled, ideal for unit testing               |
+| **Type Safety**        | Limited type safety and possible runtime issues             | Full type safety with compile-time checks                                | Strong type safety with enforced state transitions                                   |
+| **Code Maintainability**| Degrades with scale; harder to manage complex logic        | Clean, modular, and easy to refactor                                     | High maintainability; each bloc encapsulates specific domain logic                   |
+| **IDE Tooling & Support**| Excellent support with Flutter tools                      | Excellent; strong integration and auto-complete support                  | Excellent; full support in major IDEs like VS Code and Android Studio                |
+
+
+---
+## 5. Offline Handling
+
+Ensuring robust offline support is critical for enhancing user experience, particularly in environments with intermittent connectivity. To enable users to continue working seamlessly offline and synchronize their changes once connectivity is restored, the following strategies can be implemented:
+
+### 🗂️ Local Data Persistence
+
+Implementing reliable local storage is the foundation of offline-first functionality:
+
+- **Hive / SQLite**  
+  Ideal for storing structured data such as workspaces, tasks, and user metadata locally.
+  
+- **Shared Preferences**  
+  Suitable for persisting lightweight configuration or frequently accessed preferences.
+
+- **Caching**  
+  Cache backend responses (e.g., boards and task lists) locally to reduce network dependency and enhance load performance.
+
+
+### 🔄 Change Tracking Mechanism
+
+To support deferred synchronization, track and store user interactions performed while offline:
+
+- Maintain an **operation queue** locally that records CRUD operations with timestamps.
+- Classify operations (`create`, `update`, `delete`) and preserve metadata required for eventual synchronization.
+- Implement **conflict resolution policies** (e.g., *last-write-wins* or *manual resolution prompts*) on sync.
+
+
+### 🔁 Synchronization Strategy
+
+Once the device regains internet connectivity, synchronize the local changes with the backend:
+
+- **Batched Sync**  
+  Group multiple queued operations into a single network request to optimize bandwidth and ensure transactional integrity.
+
+- **Conflict Handling**  
+  Detect discrepancies during sync and resolve using predefined rules or user intervention.
+
+
+### ☁️ Firebase Firestore Integration
+
+Firestore provides **native offline support** for both mobile and web:
+
+- Automatically caches documents for offline use.
+- Queues and syncs write operations when the network is restored.
+
+However, manual control is needed for:
+
+- Fine-grained caching strategies.
+- Custom conflict resolution (especially for collaborative multi-user updates).
+
+
+### 🌐 Connectivity Monitoring
+
+Efficient synchronization depends on accurate network status monitoring:
+
+- Use packages like `connectivity_plus` or `internet_connection_checker` to:
+  - Monitor network status changes in real-time.
+  - Trigger queued sync operations immediately upon reconnecting.
+  - Notify users of offline status and pending actions.
+
+
+---
 
 ## 📃 License
 
