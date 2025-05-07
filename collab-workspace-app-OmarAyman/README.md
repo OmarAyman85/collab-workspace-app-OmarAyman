@@ -355,7 +355,7 @@ Stores information about each registered user.
 | `name`     | String | Full name of the user                             |
 | `email`    | String | Unique email address                              |
 | `password` | String | Hashed password (optional if using Firebase Auth) |
-| `photoUrl` | String | Profile picture Urls after impelemntation         |
+| `photoUrl` | String | Profile picture Urls in firebase storage          |
 
 ---
 
@@ -460,6 +460,132 @@ FocusFlow uses Firebase as the backend service to handle authentication, real-ti
 This setup allows modular, scalable interaction between the app and Firebase services, ensuring seamless real-time collaboration and secure data handling.
 
 ---
+
+# Technical Questions
+
+## 1. Backend Architecture: Scaling to Support 1 Million Workspaces
+
+To support scalability as the user base and number of workspaces grow to 1 million or more, the backend should be designed with **scalability**, **resilience**, and **modularity** in mind. The following architectural strategies are recommended:
+
+
+### 🧱 Microservices Architecture
+
+Decompose the monolithic application into independent, loosely coupled services — such as:
+
+- `AuthService`
+- `WorkspaceService`
+- `BoardService`
+- `TaskService`
+
+**Benefits:**
+
+- Independent deployment and scaling of services  
+- Better fault isolation and maintainability  
+- Language and technology flexibility across services  
+
+
+### 🧩 Database Sharding
+
+Implement **horizontal partitioning (sharding)** of the database based on `user ID` or `workspace ID`.
+
+**Benefits:**
+
+- Distributes workload across multiple databa instances  
+- Reduces query latency under high load  
+- Prevents performance bottlenecks in single-node architectures  
+
+
+### ⚡ Caching Layer
+
+Incorporate a high-performance caching solutions as **Redis** to:
+
+- Reduce database reads for frequently accessed data (e.g., workspace metadata, task summaries)  
+- Improve latency and throughput of read-heavy operations  
+
+
+### 🔁 Asynchronous Processing
+
+Use message brokers like **RabbitMQ** or **Apache Kafka** to handle non-blocking, long-running tasks such as:
+
+- Email notifications  
+- Activity logging  
+
+This decouples the user experience from backend processing and improves responsiveness.
+
+
+### 🌐 API Gateway
+
+Leverage an API Gateway (e.g., **AWS API Gateway**, **NGINX**) to:
+
+- Route and load balance traffic across microservices  
+- Enforce security policies (authentication, authorization)  
+- Implement rate limiting, logging, and request transformation
+
+---
+## 2. Authentication Strategy: Securing Authentication Across Mobile and Web Applications and Handling token expiration and refresh flows
+
+A robust authentication strategy is critical to ensuring secure access across mobile and web platforms. The implementation should combine industry standards with secure storage and proper token management. The following components form a comprehensive approach:
+
+---
+
+### 🔐 Authentication Protocols
+
+Leverage modern authentication protocols such as:
+
+- **OAuth 2.0 / OpenID Connect**  
+  For federated login using identity providers like Google, Apple, or traditional email/password authentication.
+
+- **JWT (JSON Web Tokens)**  
+  Used for stateless authentication and Role-Based Access Control (RBAC), where tokens encode user roles, permissions, and metadata.
+
+---
+
+### 🔑 Token Types and Secure Storage
+
+Implement a dual-token system to balance usability and security:
+
+- **Access Token** (short-lived):  
+  Valid for ~15 minutes to minimize exposure risk.
+
+- **Refresh Token** (long-lived):  
+  Valid for 7–30 days depending on security requirements.
+
+**Secure Token Storage:**
+
+- **Mobile:**
+  - *iOS:* Store tokens in the **Keychain**
+  - *Android:* Use **EncryptedSharedPreferences** or **Android Keystore**
+
+- **Web:**
+  - Use **HttpOnly**, **Secure Cookies** to prevent XSS attacks  
+  - Avoid using `localStorage` or `sessionStorage` for sensitive tokens
+
+---
+
+### 🔄 Token Expiration and Refresh Flows
+
+Ensure a seamless user experience while maintaining security.
+
+1. **Token Lifecycle**
+   - The access token is included in each API request.
+   - When it expires, the client silently uses the refresh token to obtain a new access token.
+
+2. **Refresh Flow Handling**
+   - On receiving a `401 Unauthorized` response, a refresh token request is triggered.
+   - On success, replace the old tokens and retry the original request.
+
+3. **Failure Handling**
+   - If the refresh token is invalid or expired (e.g., revoked, tampered):
+     - Clear stored credentials
+     - Force user logout
+     - Redirect to the login screen
+
+This mechanism ensures continued secure access without frequent interruptions while guarding against unauthorized access through compromised tokens.
+
+---
+
+---
+
 
 ## 📃 License
 
